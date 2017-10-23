@@ -12,9 +12,11 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 /**
  * Webpack Constants
  */
+console.log('METADATA.port: ', METADATA.port, '| PORT: ', PORT);
+
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   host: HOST,
@@ -23,7 +25,6 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   HMR: HMR
 });
 
-console.log('METADATA.port: ', METADATA.port, '| PORT: ', PORT);
 
 /**
  * Webpack configuration
