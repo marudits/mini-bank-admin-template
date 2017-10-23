@@ -125,7 +125,7 @@ module.exports = function(options) {
      * See: https://webpack.github.io/docs/webpack-dev-server.html
      */
     devServer: {
-      port: METADATA.port,
+      port: process.env.PORT || 8000,
       host: METADATA.host,
       historyApiFallback: true,
       watchOptions: {
