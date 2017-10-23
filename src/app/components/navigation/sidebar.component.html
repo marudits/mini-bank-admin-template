@@ -1,0 +1,26 @@
+<ul id="slide-out" class="side-nav fixed">
+	<li>
+		<div class="user-view">
+			<div class="background">
+				<img src="{{header.background}}">
+			</div>
+			<a href="#!user">
+				<img class="circle" src="{{header.avatar}}">
+			</a>
+
+			<a href="#!name">
+				<span class="white-text name">{{header.name}}</span>
+			</a>
+	      	
+	      	<a href="#!email">
+	      		<span class="white-text email">{{header.email}}</span>
+	      	</a>
+    	</div>
+    </li>
+    <li *ngFor="let menu of menulist">
+    	<a href="{{menu.url}}">
+    		<i class="material-icons">{{menu.icon}}</i>
+    		{{menu.title}}
+    	</a>
+    </li>
+</ul>

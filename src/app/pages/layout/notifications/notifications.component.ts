@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { AppConfig } from '../../app.config';
+import { AppConfig } from '../../../app.config';
 declare let jQuery: any;
 
 @Component({

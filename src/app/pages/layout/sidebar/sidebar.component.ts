@@ -1,9 +1,9 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
-import { AppConfig } from '../../app.config';
+import { AppConfig } from '../../../app.config';
 
-import { getInitial } from '../../utils/helpers/stringManipulation';
+import { getInitial } from '../../../utils/helpers/stringManipulation';
 declare let jQuery: any;
 
 @Component({

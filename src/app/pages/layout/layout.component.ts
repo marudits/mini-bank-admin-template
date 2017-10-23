@@ -13,7 +13,7 @@ import {
   NavigationCancel,
   NavigationError
 } from '@angular/router';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../../app.config';
 
 declare let jQuery: any;
 declare let Hammer: any;
