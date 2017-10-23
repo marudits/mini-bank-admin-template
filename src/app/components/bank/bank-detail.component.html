@@ -1,0 +1,9 @@
+<table class="responsive-table">
+	<tbody>
+		<tr *ngFor="let key of table.header;let i = index">
+			<th>{{table.header[i]}}</th>
+			<td>:</td>
+			<td>{{bankInfo[table.column[i]]}}</td>
+		</tr>
+	</tbody>
+</table>

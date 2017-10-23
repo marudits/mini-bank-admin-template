@@ -1,0 +1,20 @@
+<div id="dialog-modal" class="modal" materialize="modal" [materializeParams]="materializeParams" [materializeActions]="modalActions">
+	<div class="modal-content">
+	  <h4>{{info.header}}</h4>
+
+	  <div [ngSwitch]="info.content">
+	  	<bank-detail *ngSwitchCase="MODAL_TYPE.BANK_DETAIL" [data]="info.data"></bank-detail>
+	  	<rating-detail *ngSwitchCase="MODAL_TYPE.RATING_DETAIL" [data]="info.data"></rating-detail>
+	  	<employee-detail *ngSwitchCase="MODAL_TYPE.EMPLOYEE_DETAIL" [data]="info.data"></employee-detail>
+		<p *ngSwitchDefault>{{info.content}}</p>
+	  </div>
+
+	</div>
+	<div *ngIf="type === MODAL_TYPE.INFORMATION" class="modal-footer">
+	  <a class="modal-action modal-close waves-effect waves-gray btn-flat">Close</a>
+	</div>
+	<div *ngIf="type === MODAL_TYPE.CONFIRMATION" class="modal-footer">
+	  <a class="modal-action modal-close waves-effect waves-gray btn-flat">Cancel</a>
+	  <a class="modal-action modal-close waves-effect waves-red btn-flat" (click)="(actionList.confirm)()">OK</a>
+	</div>
+</div>

@@ -1,0 +1,77 @@
+<form class="col s12">
+	<div class="row">
+		<div class="col s6">
+			<div class="row">
+				<div class="row">
+			        <div class="input-field col s12">
+			          <input id="bank-name" name="bank-name" type="text" [(ngModel)]="bank.name">
+			          <label for="bank-name" [class.active]="bank.name !== ''">Name</label>
+			        </div>
+			    </div>
+				<div class="row">
+					<div class="input-field col s12">
+						<textarea id="bank-address" name="bank-address" class="materialize-textarea" [(ngModel)]="bank.address"></textarea>
+						<label for="bank-address" [class.active]="bank.address !== ''">Address</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<input type="text" id="bank-lat" name="bank-lat" [(ngModel)]="bank.location.lat">
+						<label for="bank-lat" [class.active]="bank.location.lat !== ''">Latitude</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="text" name="bank-lng" id="bank-lng" [(ngModel)]="bank.location.lng">
+						<label for="bank-lng" [class.active]="bank.location.lng !== ''">Longitude</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s2">
+						<input 
+							materialize="pickatime" 
+							[materializeParams]="[{twelvehour: false}]"
+							type="text" id="bank-officehours-start" name="bank-officehours-start" class="timepicker" [(ngModel)]="bank.officeHours[0]">
+						<label for="bank-officehours-start" [class.active]="bank.officeHours[0] !== ''">Open</label>
+					</div>
+					<div class="input-field col s2">
+						<input 
+							materialize="pickatime" 
+							[materializeParams]="[{twelvehour: false}]"
+							type="text" id="bank-officehours-close" name="bank-officehours-close" class="timepicker" [(ngModel)]="bank.officeHours[1]">
+						<label for="bank-officehours-close" [class.active]="bank.officeHours[1] !== ''">Close</label>
+					</div>
+					<div class="input-field col s8">
+						<select multiple materialize="material_select" id="bank-officedays" name="bank-officedays">
+							<option *ngFor="let day of days" value="{{day.id}}" [attr.selected]="bank.officeDays.indexOf(day.id) !== -1 ? '' : null">{{day.name}}</option>
+					    </select>
+					    <label>Days</label>
+					</div>
+				</div>
+				<div class="row">
+			        <div class="input-field col s12">
+			          <input id="bank-phone" name="bank-phone" type="tel" [(ngModel)]="bank.phone">
+			          <label for="bank-phone" [class.active]="bank.phone !== ''">Phone</label>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div class="col s6">
+			
+		</div>
+	</div>
+</form>
+
+<div class="row">
+	<div class="col s6">
+		<button class="btn waves-effect waves-light blue"(click)="goBack()">
+			<i class="material-icons left">arrow_back</i>
+			Bank
+		</button>
+	</div>
+	<div class="col s6 push-s4">
+		<button class="btn waves-effect waves-light"(click)="submitForm()">
+			Submit
+			<i class="material-icons right">send</i>
+		</button>	
+	</div>
+</div>
+

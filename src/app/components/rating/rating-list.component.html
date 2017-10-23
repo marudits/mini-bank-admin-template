@@ -1,0 +1,37 @@
+<table id="rating-list" class="highlight responsive-table">
+	<thead>
+		<tr>
+			<th *ngFor="let header of table.header">
+				{{header}}
+			</th>
+			<th>
+				Action
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let item of listItem">
+			<td *ngFor="let column of table.body">
+				{{item[column]}}
+			</td>
+			<td>
+				<a class="btn-floating btn-small waves-effect waves-light blue" (click)="onClickDetail(item)">
+					<i class="material-icons">description</i>
+				</a>
+				<a class="btn-floating btn-small waves-effect waves-light red" (click)="onClickDelete(item)">
+					<i class="material-icons">delete</i>
+				</a>
+
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<dialog-modal
+	[info]="modalInfo.info"
+	[type]="modalInfo.type"
+	[actionList]="modalInfo.actionList"
+	[materializeParams]="[]"
+	[modalActions]="modalActions"
+	>
+</dialog-modal>

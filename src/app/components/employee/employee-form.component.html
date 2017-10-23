@@ -1,0 +1,62 @@
+<form class="col s12" [formGroup]="form">
+	<div class="row">
+		<div class="col s6">
+			<div class="row">
+		        <div class="input-field col s12">
+		          <input id="employee-name" name="employee-name" type="text" value="{{employee.name}}" formControlName="name">
+		          <label for="employee-name" [class.active]="employee.name !== ''">Name</label>
+		        </div>
+		    </div>
+		    <div class="row">
+		        <div class="input-field col s12">
+		          <input id="employee-email" name="employee-email" type="email" value="{{employee.email}}" formControlName="email">
+		          <label for="employee-email" [class.active]="employee.email !== ''">Email</label>
+		        </div>
+		    </div>
+			<div class="row">
+				<div class="input-field col s7">
+					<input type="text" id="employee-phone" name="employee-phone" value="{{employee.phone}}" formControlName="phone">
+					<label for="employee-phone" [class.active]="employee.phone !== ''">Phone</label>
+				</div>
+				<div class="input-field col s5">
+					<input type="text" name="employee-ext" id="employee-ext" value="{{employee.ext}}" formControlName="ext">
+					<label for="employee-ext" [class.active]="employee.ext !== ''">Ext</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<select materialize="material_select" id="employee-department" name="employee-department" formControlName="department" (ngModelChange)="onChangeHandler('department', $event)">
+						<option *ngFor="let dep of listDepartment" [attr.selected]="dep.id === employee.departmentId ? '' : null">{{dep.name}}</option>
+				    </select>
+				    <label>Department</label>
+				</div>
+				<div class="input-field col s6">
+					<select materialize="material_select" name="employee-position" id="employee-position" formControlName="position" (ngModelChange)="onChangeHandler('position', $event)">
+						<option *ngFor="let pos of listPosition" [attr.selected]="pos.id === employee.positionId ? '' : null">{{pos.name}}</option>
+				    </select>
+				    <label>Position</label>
+				</div>
+			</div>
+		</div>
+		<div class="col s6">
+			<input type="hidden" name="employee-id" formControlName="id" value="{{employee.id}}">
+			<input type="hidden" name="employee-departmentId" formControlName="departmentId" value="{{employee.departmentId}}">
+			<input type="hidden" name="employee-positionId" formControlName="positionId" value="{{employee.positionId}}">
+		</div>
+	</div>
+</form>
+
+<div class="row">
+	<div class="col s6">
+		<button class="btn waves-effect waves-light blue"(click)="goBack()">
+			<i class="material-icons left">arrow_back</i>
+			contact
+		</button>
+	</div>
+	<div class="col s2 push-s4">
+		<button class="btn waves-effect waves-light"(click)="submitForm()">
+			Submit
+			<i class="material-icons right">send</i>
+		</button>	
+	</div>
+</div>
