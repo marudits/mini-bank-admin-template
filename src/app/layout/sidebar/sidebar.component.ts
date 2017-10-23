@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { AppConfig } from '../../app.config';
+
+import { getInitial } from '../../utils/helpers/stringManipulation';
 declare let jQuery: any;
 
 @Component({
@@ -14,6 +16,24 @@ export class Sidebar implements OnInit {
   config: any;
   router: Router;
   location: Location;
+
+  //CHANGE : CONST or IMPORT
+  private sidebarList = [
+    { key: 'dashboard', name: 'Dashboard', route: 'dashboard', icon: 'fa fa-desktop'},
+    { key: 'bank', name: 'Bank & ATM', route: 'bank', icon: 'fa fa-bank'},
+    { key: 'review', name: 'Review', route: 'review', icon: 'fa fa-edit'},
+    { key: 'contact', name: 'Contact', route: 'contact', icon: 'fa fa-phone-square'},
+    { key: 'customer', name: 'Customer', route: 'customer', icon: 'fa fa-users'}
+  ];
+
+  //CHANGE : PARSED via Attr
+  private accountInfo = {
+    firstName: 'Marudi',
+    lastName: 'Tri Subakti',
+    lastNameInitial: getInitial('Tri Subakti'),
+    totalInfo: 23,
+    imgUrl: 'assets/img/people/a5.jpg'
+  }
 
   constructor(config: AppConfig, el: ElementRef, router: Router, location: Location) {
     this.$el = jQuery(el.nativeElement);
