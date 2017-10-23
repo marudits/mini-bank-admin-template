@@ -116,7 +116,7 @@
     "typedoc": "0.5.0",
     "typescript": "2.0.10",
     "url-loader": "0.5.7",
-    "v8-lazy-parse-webpack-plugin": "0.3.0",
+    "v8-lazy-parse-webpack-plugin": "0.3.0"
   },
   "engines": {
     "node": ">= 4.2.1",
