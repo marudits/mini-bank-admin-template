@@ -12,7 +12,7 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 /**
  * Webpack Constants
  */
-console.log('METADATA.port: ', METADATA.port, '| PORT: ', PORT);
+console.log('METADATA.port: ', (process.env.PORT || 8000));
 
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
