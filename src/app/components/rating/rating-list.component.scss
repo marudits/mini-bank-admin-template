@@ -1,0 +1,14 @@
+@import '../../scss/_color';
+
+.item-action {
+	cursor: pointer;
+	font-size: 1em;
+	
+	&.detail {
+		background-color: $blue;
+	}
+
+	&.delete {
+		background-color: $red;
+	}
+}

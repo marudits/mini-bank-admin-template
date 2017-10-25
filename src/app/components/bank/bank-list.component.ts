@@ -73,7 +73,6 @@ export class BankList implements OnInit {
     onActionDelete(): void {
     	this.bankService.deleteData(this.selectedItem)
     		.then((item) => {
-    			//showToast(`Data ${this.selectedItem.name} was successfully deleted`);
     			this.getList();
     		});
 

@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { MaterializeAction } from 'angular2-materialize';
+import { Component, OnInit} from '@angular/core';
 
+import * as $ from 'jquery';
 
 //Component
 import { Rating } from './rating';
@@ -17,7 +17,8 @@ import { RatingService } from '../../utils/services/rating.service';
 
 @Component({
 	selector: 'rating-list',
-	templateUrl: './rating-list.component.html'
+	templateUrl: './rating-list.component.html',
+	styleUrls: ['./rating-list.component.scss']
 })
 
 export class RatingList implements OnInit {
@@ -36,8 +37,6 @@ export class RatingList implements OnInit {
 		type: '',
 		actionList: {}
 	}
-
-	modalActions = new EventEmitter<string | MaterializeAction>();
 
 	constructor(
 		private ratingService: RatingService
@@ -65,19 +64,20 @@ export class RatingList implements OnInit {
 	}
 
 	private openModal(): void {
-		this.modalActions.emit({action: 'modal', params: ['open']});
+		$('#modalWindow').modal('show');
 	}
 
 	private closeModal(): void {
-		this.modalActions.emit({action: 'modal', params: ['close']});
+		$('#modalWindow').modal('hide');
 	}
 
 	private onActionDelete(): void{
 		this.ratingService.deleteData(this.selectedItem)
 			.then((item) => {
-				showToast(`Data ${this.selectedItem.name} was successfully deleted`);
     			this.getList();
 			}); 
+
+		this.closeModal();
 	}
 
 	private onClickDetail(item: Rating): void {
@@ -96,7 +96,9 @@ export class RatingList implements OnInit {
 				type: MODAL_TYPE.INFORMATION
 			},
 			{
-				actionList: {}
+				actionList: {
+					close: () => this.closeModal()
+				}
 			}
 		);
 
@@ -120,7 +122,8 @@ export class RatingList implements OnInit {
 			},
 			{
 				actionList: {
-					confirm: () => this.onActionDelete()
+					confirm: () => this.onActionDelete(),
+					close: () => this.closeModal()
 				}
 			}
 		);
