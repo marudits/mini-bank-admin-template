@@ -1,6 +1,7 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MaterializeAction } from 'angular2-materialize';
+
+import * as $ from 'jquery';
 
 //Component
 import { Bank } from './bank';
@@ -16,18 +17,21 @@ import { MODAL_TYPE } from '../../utils/config/modal';
 
 @Component({
 	selector: 'bank-list',
-	templateUrl: './bank-list.component.html'
+	templateUrl: './bank-list.component.html',
+	styleUrls: ['./bank-list.component.scss']
 })
 
 export class BankList implements OnInit {
 	private listItem: Bank[];
 	private showedItem: Object[];
 	private table = {
-		header: ['Name', 'Address', 'Rating', 'Favourites', 'Office Hours', 'Office Days'],
-		body: ['name', 'address', 'rating', 'favourites', 'officeHours', 'officeDays']
+		header: ['Name', 'Address', 'Rating', 'Fav', 'Office Hours', 'Office Days'],
+		body: ['name', 'address', 'rating', 'favourites', 'officeHoursFormatted', 'officeDaysFormatted']
 	}
 
 	private formBank: string = 'modal-bank-form';
+
+	@ViewChild('modalWindow') private modalWindow: any;
 
 	private modalInfo: Object = {
 		info: {
@@ -39,8 +43,6 @@ export class BankList implements OnInit {
 	}
 
 	private selectedItem: Bank;
-
-	modalActions = new EventEmitter<string | MaterializeAction>();
     
 
 	constructor(
@@ -52,20 +54,30 @@ export class BankList implements OnInit {
 		this.getList();
 	}
 
-	openModal() {
-        this.modalActions.emit({ action: "modal", params: ['open'] });
+    openModal(){
+    	$('#modalWindow').modal('show');
+    }
+
+    openModalDirective() {
+		console.log('openModalDirective: this.modalWindow.modal: ', this.modalWindow);
     }
     
     closeModal() {
-        this.modalActions.emit({ action: "modal", params: ['close'] });
+		$('#modalWindow').modal('hide');
+    }
+
+    closeModalDirective() {
+		console.log('closeModalDirective: this.modalWindow.modal: ', this.modalWindow);
     }
 
     onActionDelete(): void {
     	this.bankService.deleteData(this.selectedItem)
     		.then((item) => {
-    			showToast(`Data ${this.selectedItem.name} was successfully deleted`);
+    			//showToast(`Data ${this.selectedItem.name} was successfully deleted`);
     			this.getList();
     		});
+
+    	this.closeModal();
     }
 
     private getList(): void {
@@ -92,7 +104,8 @@ export class BankList implements OnInit {
 			},
 			{
 				actionList: {
-					confirm: () => this.onActionDelete()
+					confirm: () => this.onActionDelete(),
+					close: () => this.closeModal()
 				}
 			}
 		);
@@ -115,7 +128,9 @@ export class BankList implements OnInit {
 				type: MODAL_TYPE.INFORMATION
 			},
 			{
-				actionList: {}
+				actionList: {
+					close: () => this.closeModal()
+				}
 			}
 		);
 
@@ -123,6 +138,6 @@ export class BankList implements OnInit {
 	}
 
 	private onClickEdit(item: Bank): void{
-		this.router.navigate(['bank', 'update', item.id]);
+		this.router.navigate(['app', 'bank', 'update', item.id]);
 	}
 }

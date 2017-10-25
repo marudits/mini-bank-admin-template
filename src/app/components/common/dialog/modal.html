@@ -1,20 +1,31 @@
-<div id="dialog-modal" class="modal" materialize="modal" [materializeParams]="materializeParams" [materializeActions]="modalActions">
-	<div class="modal-content">
-	  <h4>{{info.header}}</h4>
+<div bsModal #modalWindow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modalWindow">	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<button (click)="(actionList.close)()" aria-label="Close" class="close ml-auto" type="button">
+          			<span aria-hidden="true">&times;</span>
+        		</button>
+        		
+        		<h4 class="modal-title text-center fw-bold" id="myModalLabel18">{{info.header}}</h4>
+      		</div>
+      		
+      		<div class="modal-body">
+      			<div [ngSwitch]="info.content">
+				  	<bank-detail *ngSwitchCase="MODAL_TYPE.BANK_DETAIL" [data]="info.data"></bank-detail>
+				  	<rating-detail *ngSwitchCase="MODAL_TYPE.RATING_DETAIL" [data]="info.data"></rating-detail>
+				  	<employee-detail *ngSwitchCase="MODAL_TYPE.EMPLOYEE_DETAIL" [data]="info.data"></employee-detail>
+					<p *ngSwitchDefault>{{info.content}}</p>
+				</div>
+      		</div>
+      		
+      		
+  			<div *ngIf="type === MODAL_TYPE.INFORMATION" class="modal-footer">
+  				<button type="button" class="btn btn-gray" (click)="(actionList.close)()">Close</button>
+			</div>
 
-	  <div [ngSwitch]="info.content">
-	  	<bank-detail *ngSwitchCase="MODAL_TYPE.BANK_DETAIL" [data]="info.data"></bank-detail>
-	  	<rating-detail *ngSwitchCase="MODAL_TYPE.RATING_DETAIL" [data]="info.data"></rating-detail>
-	  	<employee-detail *ngSwitchCase="MODAL_TYPE.EMPLOYEE_DETAIL" [data]="info.data"></employee-detail>
-		<p *ngSwitchDefault>{{info.content}}</p>
-	  </div>
-
-	</div>
-	<div *ngIf="type === MODAL_TYPE.INFORMATION" class="modal-footer">
-	  <a class="modal-action modal-close waves-effect waves-gray btn-flat">Close</a>
-	</div>
-	<div *ngIf="type === MODAL_TYPE.CONFIRMATION" class="modal-footer">
-	  <a class="modal-action modal-close waves-effect waves-gray btn-flat">Cancel</a>
-	  <a class="modal-action modal-close waves-effect waves-red btn-flat" (click)="(actionList.confirm)()">OK</a>
-	</div>
+			<div *ngIf="type === MODAL_TYPE.CONFIRMATION" class="modal-footer">
+				<button type="button" class="btn btn-gray" (click)="(actionList.close)()">Cancel</button>
+				<button type="button" class="btn btn-danger" (click)="(actionList.confirm)()">OK</button>
+			</div>
+    	</div>
+  	</div>
 </div>

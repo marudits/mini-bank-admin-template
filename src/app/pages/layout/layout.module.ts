@@ -16,12 +16,14 @@ import { SearchPipe } from './pipes/search.pipe';
 import { NotificationLoad } from './notifications/notifications-load.directive';
 import { Notifications } from './notifications/notifications.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
     TooltipModule.forRoot(),
     ROUTES,
-    FormsModule],
+    FormsModule
+    ],
   declarations: [
     Layout,
     Sidebar,

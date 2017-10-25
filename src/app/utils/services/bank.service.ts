@@ -35,11 +35,11 @@ export class BankService {
 	}
 
 	getList(params: Object = null): Promise<Bank[]>{
-		let url = params ? this.modelUrl + '?filter=' + JSON.stringify(params) : this.modelUrl;
+		let url = params ? this.modelUrl + '/list?filter=' + JSON.stringify(params) : this.modelUrl + '/list';
 		return this.http
 			.get(url, {headers: this.headers})
 			.toPromise()
-			.then(response => response.json() as Bank[])
+			.then(response => response.json().result.data as Bank[])
 			.catch(this.handleError);
 	}
 
