@@ -1,77 +1,175 @@
-<form class="col s12">
-	<div class="row">
-		<div class="col s6">
-			<div class="row">
-				<div class="row">
-			        <div class="input-field col s12">
-			          <input id="bank-name" name="bank-name" type="text" [(ngModel)]="bank.name">
-			          <label for="bank-name" [class.active]="bank.name !== ''">Name</label>
-			        </div>
-			    </div>
-				<div class="row">
-					<div class="input-field col s12">
-						<textarea id="bank-address" name="bank-address" class="materialize-textarea" [(ngModel)]="bank.address"></textarea>
-						<label for="bank-address" [class.active]="bank.address !== ''">Address</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s6">
-						<input type="text" id="bank-lat" name="bank-lat" [(ngModel)]="bank.location.lat">
-						<label for="bank-lat" [class.active]="bank.location.lat !== ''">Latitude</label>
-					</div>
-					<div class="input-field col s6">
-						<input type="text" name="bank-lng" id="bank-lng" [(ngModel)]="bank.location.lng">
-						<label for="bank-lng" [class.active]="bank.location.lng !== ''">Longitude</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s2">
-						<input 
-							materialize="pickatime" 
-							[materializeParams]="[{twelvehour: false}]"
-							type="text" id="bank-officehours-start" name="bank-officehours-start" class="timepicker" [(ngModel)]="bank.officeHours[0]">
-						<label for="bank-officehours-start" [class.active]="bank.officeHours[0] !== ''">Open</label>
-					</div>
-					<div class="input-field col s2">
-						<input 
-							materialize="pickatime" 
-							[materializeParams]="[{twelvehour: false}]"
-							type="text" id="bank-officehours-close" name="bank-officehours-close" class="timepicker" [(ngModel)]="bank.officeHours[1]">
-						<label for="bank-officehours-close" [class.active]="bank.officeHours[1] !== ''">Close</label>
-					</div>
-					<div class="input-field col s8">
-						<select multiple materialize="material_select" id="bank-officedays" name="bank-officedays">
-							<option *ngFor="let day of days" value="{{day.id}}" [attr.selected]="bank.officeDays.indexOf(day.id) !== -1 ? '' : null">{{day.name}}</option>
-					    </select>
-					    <label>Days</label>
-					</div>
-				</div>
-				<div class="row">
-			        <div class="input-field col s12">
-			          <input id="bank-phone" name="bank-phone" type="tel" [(ngModel)]="bank.phone">
-			          <label for="bank-phone" [class.active]="bank.phone !== ''">Phone</label>
-			        </div>
-			    </div>
-			</div>
-		</div>
-		<div class="col s6">
-			
-		</div>
-	</div>
-</form>
+<section class="widget col-8">
+	<header>
+		<h3>Form Bank</h3>
+	</header>
+	<div class="widget-body">
+		<form class="form-horizontal" role="form" #bankForm="ngForm">
+			<fieldset>
+				<legend>Fill in bank data</legend>
 
-<div class="row">
-	<div class="col s6">
-		<button class="btn waves-effect waves-light blue"(click)="goBack()">
-			<i class="material-icons left">arrow_back</i>
-			Bank
-		</button>
+				<div class="form-group row has-{{validation.name.status}}">
+					<div class="col-12">
+						<label class="form-control-label" for="bank-name">
+							Name
+						</label>
+						<input 
+							type="text" 
+							id="bank-name" 
+							name="bank-name" 
+							class="form-control" 
+							[(ngModel)]="bank.name"
+						/>
+						<span class="help-block">{{validation.name.status && validation.name.message !== ''  ? validation.name.message : ''}}</span>	
+					</div>
+				</div>
+
+				<div class="form-group row has-{{validation.address.status}}">
+					<div class="col-sm-12">
+						<label class="form-control-label" for="bank-address">
+							Address
+						</label>
+						
+						<textarea 
+							rows="3" 
+							class="autogrow form-control transition-height" 
+							id="bank-address"
+							name="bank-address"
+                            autosize
+                            [(ngModel)]="bank.address"
+                        ></textarea>
+
+                        <span class="help-block">{{validation.address.status && validation.address.message !== ''  ? validation.address.message : ''}}</span>
+					</div>
+					
+				</div>
+
+				<div class="form-group row has-{{validation.location.status}}">
+					<div class="col-sm-6">
+						<label class="form-control-label" for="bank-lat">
+							Latitude
+						</label>
+						<input 
+							type="text" 
+							id="bank-lat" 
+							name="bank-lat" 
+							class="form-control" 
+							[(ngModel)]="bank.location.lat"
+						/>
+					</div>
+					<div class="col-sm-6">
+						<label class="form-control-label" for="bank-lng">
+							Longitude
+						</label>
+						<input 
+							type="text" 
+							id="bank-lng" 
+							name="bank-lng" 
+							class="form-control" 
+							[(ngModel)]="bank.location.lng"
+						/>
+					</div>
+
+					<div class="col-sm-12">
+						<span class="help-block">{{validation.location.status && validation.location.message !== ''  ? validation.location.message : ''}}</span>
+					</div>
+				</div>
+
+				<div class="row">
+					
+					<div class="form-group row col-sm-6 has-{{validation.officeHours.status}}">
+						<div class="col-sm-6">
+							<label class="form-control-label" for="bank-officehours-open">
+								Open
+							</label>
+              				<div>
+                				<input 
+                					id="bank-officehours-open" 
+                					name="bank-officehours-open" 
+                					class="form-control" 
+                					[textMask]="timeMask"
+                					type="text"
+                					[(ngModel)]="bank.officeHours[0]"
+                				/>
+              				</div>
+						</div>
+
+						<div class="col-sm-6">
+							<label class="form-control-label" for="bank-officehours-close">
+								Close
+							</label>
+              				<div>
+                				<input 
+                					id="bank-officehours-close" 
+                					name="bank-officehours-close" 
+                					class="form-control" 
+                					[textMask]="timeMask" 
+                					type="text"
+                					[(ngModel)]="bank.officeHours[1]"
+                				/>
+              				</div>
+						</div>
+
+						<div class="col-sm-12">
+							<span class="help-block">{{validation.officeHours.status && validation.officeHours.message !== ''  ? validation.officeHours.message : ''}}</span>
+						</div>
+					</div>
+
+					<div class="form-group row col-sm-6 has-{{validation.officeDays.status}}" id="form-bank-officedays">
+						<label class="form-control-label" for="bank-officedays">
+							Days
+						</label>
+
+						<div>
+							<span *ngFor="let day of days" class="col-sm-3 checkbox abc-checkbox abc-checkbox-info abc-checkbox-circle pull-left">
+								<input id="day-{{day.id}}" class="bank-officedays" type="checkbox" name="bank-officedays[]" value={{day.id}} [attr.checked]="bank.officeDays.indexOf(day.id) !== -1 ? '' : null" />
+								<label for="day-{{day.id}}">
+									{{day.name}}
+								</label>
+		                	</span>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-12">
+								<span class="help-block">{{validation.officeDays.status && validation.officeDays.message !== ''  ? validation.officeDays.message : ''}}</span>	
+							</div>
+							
+						</div>
+					</div>
+
+				</div>
+
+				<div class="form-group row has-{{validation.phone.status}}">
+					<div class="col-sm-6">
+						<label class="control-label" for="bank-phone">
+							Phone
+						</label>
+						<input 
+							type="tel" 
+							id="bank-phone" 
+							name="bank-phone" 
+							class="form-control" 
+							[(ngModel)]="bank.phone"
+						/>
+
+						<span class="help-block">{{validation.phone.status && validation.phone.message !== ''  ? validation.phone.message : ''}}</span> 	
+					</div>
+				</div>
+		    </fieldset>
+
+		    <div class="form-actions">
+		    	<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-default pull-left" (click)="goBack()">
+							Back
+						</button>
+						<button type="submit" class="btn btn-success btn-success pull-right" (click)="submitForm()">
+							Submit
+						</button>	
+					</div>
+				</div>
+		    </div>
+		</form>
 	</div>
-	<div class="col s6 push-s4">
-		<button class="btn waves-effect waves-light"(click)="submitForm()">
-			Submit
-			<i class="material-icons right">send</i>
-		</button>	
-	</div>
-</div>
+</section>
+
 

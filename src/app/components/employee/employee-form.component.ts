@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { FormControl, FormGroup } from '@angular/forms';
 
 //Library
-import * as $ from 'jquery';
 import 'rxjs/add/operator/switchMap';
 
 //Component
