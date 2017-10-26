@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { AppConfig } from '../../../app.config';
 
 import { getInitial } from '../../../utils/helpers/stringManipulation';
+import { getParentUrl } from '../../../utils/helpers/urlManipulation';
 declare let jQuery: any;
 
 @Component({
@@ -56,7 +57,7 @@ export class Sidebar implements OnInit {
   }
 
   changeActiveNavigationItem(location): void {
-    let $newActiveLink = this.$el.find('a[href="#' + location.path() + '"]');
+    let $newActiveLink = this.$el.find('a[href="#' + getParentUrl(location.path()) + '"]');
 
     // collapse .collapse only if new and old active links belong to different .collapse
     if (!$newActiveLink.is('.active > .collapse > li > a')) {
