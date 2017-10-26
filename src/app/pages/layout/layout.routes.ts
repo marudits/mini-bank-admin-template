@@ -7,6 +7,7 @@ const routes: Routes = [
     { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule' },
     { path: 'bank', loadChildren: '../bank/index.module#BankModule' },
     { path: 'review', loadChildren: '../rating/index.module#RatingModule' },
+    { path: 'contact', loadChildren: '../contact/index.module#ContactModule' },
     { path: 'another-page', loadChildren: '../another/another.module#AnotherModule' },
   ]}
 ];

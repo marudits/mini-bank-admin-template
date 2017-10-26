@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 
 //Components
 import { RatingList } from '../../components/rating/rating-list.component';
-import { DialogModal } from '../../components/common/dialog/modal';
 
 //Module
 import { DialogModule } from '../../components/common/dialog/modal.module';
@@ -29,9 +28,6 @@ export const routes = [
   declarations: [ 
   	RatingPage,
     RatingList
-  ],
-  entryComponents: [
-    DialogModal
   ],
   providers: [
   	RatingService

@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { MaterializeAction } from 'angular2-materialize';
+
+import * as $ from 'jquery';
 
 //Component
 import { Employee } from './employee';
@@ -10,16 +11,19 @@ import { EmployeeService } from '../../utils/services/employee.service';
 
 //Helpers
 import { showToast } from '../../utils/helpers/dialog';
+import { ROUTE } from '../../utils/config/routing';
 
 //Config
 import { MODAL_TYPE } from '../../utils/config/modal';
 
 @Component({
 	selector: 'employee-list',
-	templateUrl: './employee-list.component.html'
+	templateUrl: './employee-list.component.html',
+	styleUrls: ['./employee-list.component.scss']
 })
 
 export class EmployeeList implements OnInit {
+	private URL = ROUTE.contact;
 	private listItem: Employee[];
 	private showedItem: Object[];
 	private table = {
@@ -40,9 +44,6 @@ export class EmployeeList implements OnInit {
 
 	private selectedItem: Employee;
 
-	modalActions = new EventEmitter<string | MaterializeAction>();
-    
-
 	constructor(
 		private employeeService: EmployeeService,
 		private router: Router
@@ -53,11 +54,11 @@ export class EmployeeList implements OnInit {
 	}
 
 	openModal() {
-        this.modalActions.emit({ action: "modal", params: ['open'] });
+        $('#modalWindow').modal('show');
     }
     
     closeModal() {
-        this.modalActions.emit({ action: "modal", params: ['close'] });
+        $('#modalWindow').modal('hide');
     }
 
     onActionDelete(): void {
@@ -108,7 +109,8 @@ export class EmployeeList implements OnInit {
 			},
 			{
 				actionList: {
-					confirm: () => this.onActionDelete()
+					confirm: () => this.onActionDelete(),
+					close: () => this.closeModal()
 				}
 			}
 		);
@@ -131,7 +133,9 @@ export class EmployeeList implements OnInit {
 				type: MODAL_TYPE.INFORMATION
 			},
 			{
-				actionList: {}
+				actionList: {
+					close: () => this.closeModal()
+				}
 			}
 		);
 
@@ -139,6 +143,8 @@ export class EmployeeList implements OnInit {
 	}
 
 	private onClickEdit(item: Employee): void{
-		this.router.navigate(['contact', 'update', item.id]);
+		let route = this.URL.update.split('/').splice(0);
+		route.push('' + item.id);
+		this.router.navigate(route);
 	}
 }
