@@ -1,7 +1,26 @@
 <h1 class="page-title">Dashboard <small><small>The Lucky One</small></small></h1>
 
 <div class="row">
+  
+  <div *ngFor="let data of widgetSimple" class="col-{{12/widgetSimple.length}}">
+    <widget-simple [data]="data"></widget-simple>    
+  </div>
+  
+</div>
+
+
+<div class="row">
+  
   <div class="col-md-6">
+    
+      <card-bank-overview 
+        [data]="mostRatedBank">
+      </card-bank-overview>
+    
+  </div>
+  
+
+  <div class="col-md-4">
     <section widget class="widget">
       <header>
         <h4>
@@ -21,4 +40,5 @@
       </div>
     </section>
   </div>
+  
 </div>

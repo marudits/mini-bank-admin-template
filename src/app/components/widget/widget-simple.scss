@@ -1,0 +1,27 @@
+@import '../../scss/_color';
+@import "../../scss/variables";
+@import "../../../../node_modules/bootstrap/scss/_variables";
+
+
+.widget-simple {
+	
+	&__header {
+		
+		.icon {
+			opacity: .5;
+			font-size: 3em;
+		}
+
+		h6 {
+			margin-top: 9px;
+    		margin-bottom: 3px;
+		}
+	}
+
+	&__body {
+		.body-item {
+			padding: 6px;
+			font-weight: bold;
+		}
+	}
+}

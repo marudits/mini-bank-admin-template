@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
+import * as qs from 'qs'
 
 import { Bank } from '../../components/bank/bank';
 import { url } from '../config/app';
@@ -26,6 +27,14 @@ export class BankService {
 			.catch(this.handleError);
 	}
 
+	customApi(path: string, params: Object = null, method: string = 'get'): Promise<any>{
+		let url = params ? this.modelUrl + path + '?' + qs.stringify(params) : this.modelUrl + path;
+		return this.http[method](url)
+			.toPromise()
+			.then(res => res.json())
+			.catch(this.handleError)
+	}
+
 	deleteData(bank: Bank): Promise<Bank> {
 		return this.http
 			.delete(`${this.modelUrl}/${bank.id}`)
@@ -34,8 +43,17 @@ export class BankService {
 			.catch(this.handleError);
 	}
 
+	getDetail(id: number): Promise<Bank> {
+		const params = {include: ['ratings']};
+		return this.http
+			.get(`${this.modelUrl}/${id}?filter=${qs.stringify(params)}`)
+			.toPromise()
+			.then(res => res.json() as Bank)
+			.catch(this.handleError);
+	}
+
 	getList(params: Object = null): Promise<Bank[]>{
-		let url = params ? this.modelUrl + '/list?filter=' + JSON.stringify(params) : this.modelUrl + '/list';
+		let url = params ? this.modelUrl + '/list?filter=' + qs.stringify(params) : this.modelUrl + '/list';
 		return this.http
 			.get(url, {headers: this.headers})
 			.toPromise()
@@ -43,13 +61,22 @@ export class BankService {
 			.catch(this.handleError);
 	}
 
-	getDetail(id: number): Promise<Bank> {
-		const params = {include: ['ratings']};
+	getMostRated(): Promise<any>{
+		let url = this.modelUrl + '/mostRated';
 		return this.http
-			.get(`${this.modelUrl}/${id}?filter=${JSON.stringify(params)}`)
+			.get(url)
 			.toPromise()
-			.then(res => res.json() as Bank)
-			.catch(this.handleError);
+			.then(res => res.json().result.data)
+			.catch(this.handleError)
+	}
+
+	getTotalSummary(): Promise<any>{
+		let url = this.modelUrl + '/totalSummary';
+		return this.http
+			.get(url)
+			.toPromise()
+			.then(res => res.json().result.data)
+			.catch(this.handleError)
 	}
 
 	private handleError(error: any): Promise<any>{
