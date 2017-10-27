@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
+import * as qs from 'qs'
 
 import { Department } from '../../components/department/department';
 import { url } from '../config/app';
@@ -18,6 +19,14 @@ export class DepartmentService {
 
 	}
 
+	customApi(path: string, params: Object = null, method: string = 'get'): Promise<any>{
+		let url = params ? this.modelUrl + path + '?' + qs.stringify(params) : this.modelUrl + path;
+		return this.http[method](url)
+			.toPromise()
+			.then(res => res.json())
+			.catch(this.handleError)
+	}
+
 	deleteData(department: Department): Promise<Department> {
 		return this.http
 			.delete(`${this.modelUrl}/${department.id}`)
@@ -27,7 +36,7 @@ export class DepartmentService {
 	}
 
 	getList(params: Object = null): Promise<Department[]>{
-		let url = params ? this.modelUrl + '?filter=' + JSON.stringify(params) : this.modelUrl;
+		let url = params ? this.modelUrl + '?filter=' + qs.stringify(params) : this.modelUrl;
 		return this.http.get(url, {headers: this.headers})
 			.toPromise()
 			.then(response => response.json() as Department[])

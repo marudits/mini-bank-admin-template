@@ -1,0 +1,29 @@
+<div class="widget-image text-white">
+  <img src="{{data.imgStreetView}}">
+  <h4 class="title rating">
+    <i class="fa fa-star"></i>
+    <span>{{data.rating}}</span>
+  </h4>
+  <div class="info text-right">
+    <i class="fa fa-map-marker h1 no-margin mr-xs"></i>
+    <h6 class="no-margin mt-xs">{{data.name}}</h6>
+    <p class="fs-sm">{{data.fullAddress.city}}, <b>{{data.fullAddress.countryCode}}</b></p>
+  </div>
+  <div class="office-schedules">
+    <div class="row">
+      <div *ngFor="let day of data.formattedOfficeDaysAndStatus" class="office-schedules__days {{day.isToday ? 'col-md-1 is-today' : 'col-md-1'}}">
+        <h5 class="no-margin">{{day.name}}</h5>
+        <span class="badge bg-{{day.isOpen ? 'success' : 'danger'}}">
+          {{day.isOpen ? 'Open' : 'Close'}}
+        </span>
+      </div>
+      <div class="col-md-4 office-schedules__hours">
+        <p>
+          {{data.officeHours[0]}}
+          -
+          {{data.officeHours[1]}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

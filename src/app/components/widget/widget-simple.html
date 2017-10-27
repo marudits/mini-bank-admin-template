@@ -1,0 +1,24 @@
+<section class="widget widget-simple bg-{{data.color}} text-white">
+  <div class="widget-body clearfix">
+    <div class="row flex-nowrap widget-simple__header">
+      <div class="col-3">
+        <span class="icon">
+          <i class="{{data.icon}}"></i>
+        </span>
+      </div>
+      <div class="col-9">
+        <h6 class="no-margin">{{data.header.title}}</h6>
+        <p class="h2 no-margin fw-normal">{{data.header.number}}</p>
+      </div>
+    </div>
+    <div class="row flex-nowrap widget-simple__body">
+
+      <div *ngFor="let body of data.body" class="col-{{12/data.body.length}} body-item">
+        
+        <h6 class="no-margin">{{body.title}}</h6>
+        <p class="value5">{{body.number}}</p>
+      </div>
+      
+    </div>
+  </div>
+</section>

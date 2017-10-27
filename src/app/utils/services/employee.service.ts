@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
+import * as qs from 'qs'
 
 import { Employee } from '../../components/employee/employee';
 import { url } from '../config/app';
@@ -26,6 +27,14 @@ export class EmployeeService {
 			.catch(this.handleError);
 	}
 
+	customApi(path: string, params: Object = null, method: string = 'get'): Promise<any>{
+		let url = params ? this.modelUrl + path + '?' + qs.stringify(params) : this.modelUrl + path;
+		return this.http[method](url)
+			.toPromise()
+			.then(res => res.json())
+			.catch(this.handleError)
+	}
+
 	deleteData(employee: Employee): Promise<Employee> {
 		return this.http
 			.delete(`${this.modelUrl}/${employee.id}`)
@@ -37,14 +46,14 @@ export class EmployeeService {
 	getDetail(id: number): Promise<Employee> {
 		const params = {include: ['department', 'position']};
 		return this.http
-			.get(`${this.modelUrl}/${id}?filter=${JSON.stringify(params)}`)
+			.get(`${this.modelUrl}/${id}?filter=${qs.stringify(params)}`)
 			.toPromise()
 			.then(res => res.json() as Employee)
 			.catch(this.handleError);
 	}
 
 	getList(params: Object = null): Promise<Employee[]>{
-		let url = params ? this.modelUrl + '?filter=' + JSON.stringify(params) : this.modelUrl;
+		let url = params ? this.modelUrl + '?filter=' + qs.stringify(params) : this.modelUrl;
 		return this.http.get(url, {headers: this.headers})
 			.toPromise()
 			.then(response => response.json() as Employee[])
