@@ -1,0 +1,35 @@
+@import '../../scss/_color';
+
+.image-carousel {
+
+	&__item {
+		overflow: hidden;
+		max-height: 264px;
+		width: 100%;
+		border-radius: 9px;
+
+		img {
+			height: 264px;
+			opacity: 0.4;
+		}
+
+		.carousel-caption {
+			h3 {
+				color: $black;
+				font-weight: bolder;
+			}
+
+			p {
+				color: $black;
+				font-weight: bolder;
+				font-style: italic;
+			}
+
+			span {
+				font-size: 0.75em;
+				font-style: italic;
+				color: $black-light;
+			}
+		}
+	}
+}

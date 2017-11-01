@@ -7,6 +7,7 @@ import { TooltipModule } from 'ng2-bootstrap';
 
 import { ROUTES }       from './layout.routes';
 
+//Component
 import { Layout } from './layout.component';
 import { Sidebar } from './sidebar/sidebar.component';
 import { Navbar } from './navbar/navbar.component';
@@ -15,6 +16,10 @@ import { ChatMessage } from './chat-sidebar/chat-message/chat-message.component'
 import { SearchPipe } from './pipes/search.pipe';
 import { NotificationLoad } from './notifications/notifications-load.directive';
 import { Notifications } from './notifications/notifications.component';
+
+//Service
+import { ApiService } from '../../utils/services/api.service';
+
 
 
 @NgModule({
@@ -33,6 +38,9 @@ import { Notifications } from './notifications/notifications.component';
     Notifications,
     NotificationLoad,
     ChatMessage
+  ],
+  providers: [
+      ApiService
   ]
 })
 export class LayoutModule {
