@@ -3,16 +3,21 @@ import { Component, OnInit } from '@angular/core';
 //Helpers
 import { getImgStreetView } from '../../utils/helpers/googleapi';
 
+//Library
+import * as moment from 'moment';
+
 //Services
 import { BankService } from '../../utils/services/bank.service';
 import { DepartmentService } from '../../utils/services/department.service';
 import { EmployeeService } from '../../utils/services/employee.service';
 import { PositionService } from '../../utils/services/position.service';
 import { RatingService } from '../../utils/services/rating.service';
+import { ApiService } from '../../utils/services/api.service';
 
 @Component({
   selector: 'dashboard',
-  templateUrl: './dashboard.template.html'
+  templateUrl: './dashboard.template.html',
+  styleUrls: ['./dashboard.scss']
 })
 
 export class Dashboard implements OnInit {
@@ -49,12 +54,36 @@ export class Dashboard implements OnInit {
 		}
 	];
 
+	private latestReview: Array<Object> = [
+		{
+			img: {
+				src: '',
+				alt: ''
+			},
+			caption: {
+				title: 'Name',
+				content: 'Lorem ipsum dolor sit amet',
+				notes: `1m ago at Bank Name`
+			}
+		}
+	]
+
+	private chartBar = {
+		single: [],
+		multi: [],
+		options: {
+			xAxisLabel: 'Label',
+			yAxisLabel: 'Label',
+		}
+	}
+
 	constructor(
 		private bankService: BankService,
 		private departmentService: DepartmentService,
 		private employeeService: EmployeeService,
 		private positionService: PositionService,
-		private ratingService: RatingService
+		private ratingService: RatingService,
+		private apiService: ApiService
 		){}
 
 	ngOnInit(){
@@ -65,7 +94,82 @@ export class Dashboard implements OnInit {
 
 		//set widget simple
 		this.setWidgetSimple();
-		
+
+		//set review carousel
+		this.setImageCarousel();
+
+		//set chart bar
+		this.setChartBar();
+	}
+
+	async setChartBar(){
+		let prevTwoMonth = moment().subtract(2, 'month'),
+			prevMonth = moment().subtract(1, 'month'),
+			currentMonth = moment();
+
+		const BANK_ACTIONS_MOBILE = [4, 5, 6, 7]
+
+		let params = {
+			prevTwoMonth: {
+				filterReference: {id: {inq: BANK_ACTIONS_MOBILE}},
+				month: new Date(prevTwoMonth)
+			},
+			prevMonth: {
+				filterReference: {id: {inq: BANK_ACTIONS_MOBILE}},
+				month: new Date(prevMonth)
+			},
+			currentMonth: {
+				filterReference: {id: {inq: BANK_ACTIONS_MOBILE}},
+				month: new Date(currentMonth)
+			}
+		}
+
+
+		let data = await [
+			{
+				legends: prevTwoMonth.format('MMM YYYY'),
+				data: await this.apiService.call('UserActions/monthlyTotalSummary', params.prevTwoMonth)
+								.then(res => res.result.data)
+			},
+			{
+				legends: prevMonth.format('MMM YYYY'),
+				data: await this.apiService.call('UserActions/monthlyTotalSummary', params.prevMonth)
+								.then(res => res.result.data)
+			},
+			{
+				legends: currentMonth.format('MMM YYYY'),
+				data: await this.apiService.call('UserActions/monthlyTotalSummary', params.currentMonth)
+								.then(res => res.result.data)
+			}
+		]
+
+		let chartData = [];
+
+		data.forEach((monthlyData) => {
+			//console.log('monthlyData: ', monthlyData);
+			let monthlyChart = {
+				name: monthlyData.legends,
+				series: []
+			};
+
+			monthlyData.data.forEach((x) => {
+				monthlyChart.series.push({name: x.name, value: x.total});
+			});
+
+			chartData.push(monthlyChart);
+		});
+
+		let multi = chartData;
+
+
+		this.chartBar = {
+			multi: multi, 
+			options: {
+				xAxisLabel: 'Bank Actions',
+				yAxisLabel: 'Total Hit'
+			}
+		}
+
 	}
 
 
@@ -99,7 +203,7 @@ export class Dashboard implements OnInit {
 				color: 'success',
 				icon: 'fa fa-bank',
 				header: {
-					title: 'Total Bank Review',
+					title: 'Total Rating Bank',
 					number: res.totalRating
 				},
 				body: [
@@ -172,5 +276,28 @@ export class Dashboard implements OnInit {
 
 
 		this.widgetSimple = [...dataBank, dataRating, dataContact];
+	}
+
+	setImageCarousel(){
+		this.ratingService.customApi('/latestReview').then(res => {
+			let {data} = res.result,
+				items = [];
+						
+			data.forEach((item) => {
+				items.push({
+					img: {
+						src: item.bank.imgStreetView,
+						alt: item.bank.name
+					},
+					caption: {
+						title: item.name,
+						content: item.text,
+						notes: `${item.time} at ${item.bank.name}`
+					}
+				});
+			});
+
+			this.latestReview = items;
+		});
 	}
 }
